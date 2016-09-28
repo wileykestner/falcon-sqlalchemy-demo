@@ -14,6 +14,7 @@ if [ ! -f ${DEVELOPMENT_ENVIRONMENT_FILENAME} ]; then
 fi
 
 source ${VIRTUALENV_NAME}/bin/activate
+pip install -r requirements.txt
 source ${DEVELOPMENT_ENVIRONMENT_FILENAME}
 
 PYTHONPATH=$PYTHONPATH:. alembic upgrade head
