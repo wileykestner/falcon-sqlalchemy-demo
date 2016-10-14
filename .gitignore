@@ -1,5 +1,6 @@
 env
 .env
+.cache
 .idea/
 *.db
 __pycache__

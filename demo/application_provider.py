@@ -24,11 +24,19 @@ class PersonListResource(object):
         name = post_body.get("name")
 
         session = self.session_provider.get_session()
-        with session_scope(session):
+        try:
             person = Person(name=name)
             session.add(person)
 
+            session.commit()
+
+            resp.set_header('location', "{}/{}".format(req.uri, person.id))
             resp.status = falcon.HTTP_201
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
 
 
 class PersonResource(object):
