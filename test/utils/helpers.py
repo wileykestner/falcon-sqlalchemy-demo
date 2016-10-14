@@ -3,7 +3,7 @@ import os
 
 TEST_FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 TEST_DATABASE_NAME = "test.db"
-MIGRATIONS_DIRECTORY_PATH = os.path.join(TEST_FILE_PATH, "..")
+MIGRATIONS_DIRECTORY_PATH = os.path.join(TEST_FILE_PATH, "..", "..")
 TEST_DATABASE_URL = "sqlite:///{}".format(TEST_DATABASE_NAME)
 
 

@@ -1,6 +1,6 @@
-from test.assertions import assert_header_value
+from test.utils.assertions import assert_header_value
 
-from test.helpers import get_header_value
+from test.utils.helpers import get_header_value
 
 
 # noinspection PyPep8Naming

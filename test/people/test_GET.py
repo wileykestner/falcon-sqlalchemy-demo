@@ -1,5 +1,6 @@
-from test.assertions import assert_header_value, assert_json_response
-from test.helpers import get_json_from_response, get_header_value
+from test.utils.assertions import assert_header_value, assert_json_response
+
+from test.utils.helpers import get_json_from_response, get_header_value
 
 
 # noinspection PyPep8Naming,PyShadowingNames

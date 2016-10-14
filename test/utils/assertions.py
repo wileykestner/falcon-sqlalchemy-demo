@@ -1,8 +1,6 @@
-import json
-
 import pytest
 
-from test.helpers import get_header_value, get_json_from_response
+from test.utils.helpers import get_header_value, get_json_from_response
 
 
 def assert_header_value(header_key, expected_value, response_headers):
