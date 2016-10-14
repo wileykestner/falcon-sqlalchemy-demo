@@ -14,4 +14,4 @@ pip install -r requirements.txt
 source ${DEVELOPMENT_ENVIRONMENT_FILENAME}
 
 PYTHONPATH=$PYTHONPATH:. alembic upgrade head
-gunicorn demo.webapp:app
+gunicorn demo.wsgi:app
