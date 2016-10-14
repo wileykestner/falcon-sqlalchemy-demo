@@ -8,10 +8,6 @@ if [ ! -d ${VIRTUALENV_NAME} ]; then
   virtualenv env -p python3
 fi
 
-if [ ! -f ${DEVELOPMENT_ENVIRONMENT_FILENAME} ]; then
-  touch ${DEVELOPMENT_ENVIRONMENT_FILENAME}
-  echo "export DATABASE_URL=sqlite:///development.db" >> ${DEVELOPMENT_ENVIRONMENT_FILENAME}
-fi
 
 source ${VIRTUALENV_NAME}/bin/activate
 pip install -r requirements.txt

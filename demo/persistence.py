@@ -4,39 +4,29 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
-__engine = None
-__session_provider = None
-
 
 def get_url():
-    database_url = os.getenv("DATABASE_URL", None)
+    database_url = os.getenv("DATABASE_URL", "sqlite:///development.db")
     if database_url is None:
         raise ValueError("Could not find DATABASE_URL in the local environment.")
 
     return database_url
 
 
-def get_engine():
-    global __engine
-    if __engine is not None:
-        return __engine
-    __engine = create_engine(get_url())
-    return __engine
+class SessionProvider(object):
+    def __init__(self):
+        super().__init__()
+        self.engine = create_engine(get_url())
+        self._session_provider = sessionmaker(self.engine)
 
-
-def get_session():
-    global __session_provider
-    if __session_provider is not None:
-        return __session_provider()
-    __session_provider = sessionmaker(bind=get_engine())
-    return __session_provider()
+    def get_session(self):
+        return self._session_provider()
 
 
 @contextmanager
-def session_scope():
-    session = get_session()
+def session_scope(session):
     try:
-        yield session
+        yield
         session.commit()
     except Exception as e:
         session.rollback()

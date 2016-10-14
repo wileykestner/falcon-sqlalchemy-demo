@@ -21,7 +21,8 @@ def run_migrations_offline():
 
 
 def run_migrations_online():
-    connectable = create_engine(get_url())
+    url = get_url()
+    connectable = create_engine(url)
 
     with connectable.connect() as connection:
         context.configure(
