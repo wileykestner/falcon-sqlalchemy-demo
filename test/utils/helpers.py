@@ -45,3 +45,7 @@ def get_header_value(header_key, response_headers):
         return next(h[1] for h in response_headers.items() if h[0] == header_key)
     except StopIteration:
         return None
+
+
+def get_identifier_for_created_person(response):
+    return int(get_header_value('location', response.headers).split('/')[-1])

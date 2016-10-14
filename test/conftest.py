@@ -28,3 +28,9 @@ def get_people(db, application):
 @pytest.fixture
 def create_person(db, application):
     return lambda name: application.post_json('/people', {'name': name})
+
+
+# noinspection PyShadowingNames,PyUnusedLocal
+@pytest.fixture
+def delete_person(db, application):
+    return lambda identifier: application.delete('/people/{}'.format(identifier))

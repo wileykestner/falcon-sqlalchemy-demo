@@ -15,7 +15,7 @@ class PersonListResource(object):
         session = self.session_provider.get_session()
         with session_scope(session):
             resp.data = json.dumps({
-                "type": "people",
+                "type": "person_list",
                 "data": [{"id": p.id, "name": p.name} for p in session.query(Person, Person.id, Person.name).all()],
             }).encode("utf-8")
 
@@ -48,10 +48,13 @@ class PersonResource(object):
         session = self.session_provider.get_session()
         with session_scope(session):
             person = session.query(Person).get(int(identifier))
-            resp.data = json.dumps({
-                "type": "person",
-                "data": {"id": person.id, "name": person.name},
-            }).encode("utf-8")
+            if person is not None:
+                resp.data = json.dumps({
+                    "type": "person",
+                    "data": {"id": person.id, "name": person.name},
+                }).encode("utf-8")
+            else:
+                resp.status = falcon.HTTP_404
 
     def on_delete(self, req, resp, identifier):
         session = self.session_provider.get_session()
