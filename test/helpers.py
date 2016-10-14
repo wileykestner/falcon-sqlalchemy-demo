@@ -1,8 +1,6 @@
 import json
 import os
 
-import pytest
-
 TEST_FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 TEST_DATABASE_NAME = "test.db"
 MIGRATIONS_DIRECTORY_PATH = os.path.join(TEST_FILE_PATH, "..")
@@ -16,13 +14,16 @@ def set_up_test_database():
         pass
     os.chdir(MIGRATIONS_DIRECTORY_PATH)
     os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+
     import alembic.config
-    alembicArgs = [
+    alembic_args = [
+        '-xloggingPreference=CRITICAL',
         '--raiseerr',
         'upgrade',
-        'head',
+        'head'
     ]
-    alembic.config.main(argv=alembicArgs)
+
+    alembic.config.main(argv=alembic_args)
 
 
 def tear_down_test_database():

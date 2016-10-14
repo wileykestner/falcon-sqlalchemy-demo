@@ -1,8 +1,12 @@
 # Falcon-SQLAlchemy Demo
 
+## Run the development server
 `./run_dev_server.sh`
 
-## Test the application
+## Run tests
+`./test.sh`
+
+## Test the application manually with `curl`
 
 ```
 curl -X POST "http://localhost:8000/people" -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"name": "Lionel Messi"}' -w "\n"

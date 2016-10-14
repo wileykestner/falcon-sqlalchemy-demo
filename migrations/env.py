@@ -1,5 +1,6 @@
 from __future__ import with_statement
 
+import logging
 from logging.config import fileConfig
 
 from sqlalchemy import create_engine
@@ -9,6 +10,9 @@ from demo.persistence import get_url
 
 config = context.config
 fileConfig(config.config_file_name)
+logging_preference = context.get_x_argument(as_dictionary=True).get('loggingPreference')
+if logging_preference:
+    logging.getLogger('alembic').setLevel(logging_preference)
 
 
 def run_migrations_offline():
