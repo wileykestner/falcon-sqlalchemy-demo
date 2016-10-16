@@ -26,5 +26,6 @@ class Test_When_One_Person_Exists(object):
         person = people[0]
         person_id = get_identifier_for_created_person(response)
 
+        assert len(person) == 2
         assert person['name'] == 'Frank Stella'
         assert person['id'] == person_id
