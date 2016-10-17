@@ -1,6 +1,6 @@
 from people.people_application import PeopleApplication
 from test.test_people.test_observers import PresentObserver, CreateObserver, DeleteObserver
-from test.test_people.test_repositories import InMemoryPeopleRepository
+from test.test_people.reference_repositories import InMemoryPeopleRepository
 
 
 # noinspection PyPep8Naming,PyUnusedLocal,PyShadowingNames
@@ -35,7 +35,7 @@ class Test_People_Application(object):
         people_application.create_person(name='Mary', observer=create_observer)
 
         delete_observer = DeleteObserver()
-        people_application.delete_person(identfier=create_observer.person.identifier,
+        people_application.delete_person(identfier=create_observer.identifier,
                                          observer=delete_observer)
 
         assert delete_observer.deleted_person.name == 'Mary'

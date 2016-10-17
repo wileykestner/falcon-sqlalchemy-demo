@@ -12,8 +12,8 @@ class PeopleApplication(object):
         observer.did_present_people(people=people)
 
     def create_person(self, name: str, observer: CreatePersonObserver):
-        person = self._people_repository.create_person(name=name)
-        observer.did_create_person(person=person)
+        identifier = self._people_repository.create_person(name=name)
+        observer.did_create_person(identifier=identifier)
 
     def delete_person(self, identfier, observer: DeletePersonObserver):
         deleted_person = self._people_repository.delete_person(identifier=identfier)

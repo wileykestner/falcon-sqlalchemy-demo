@@ -1,4 +1,5 @@
-from people.people_application import PresentPeopleObserver, DeletePersonObserver
+from typing import Any
+
 from people.observers import CreatePersonObserver, PresentPeopleObserver, DeletePersonObserver
 from people.values import Person
 
@@ -13,10 +14,10 @@ class PresentObserver(PresentPeopleObserver):
 
 class CreateObserver(CreatePersonObserver):
     def __init__(self):
-        self.person = None
+        self.identifier = None
 
-    def did_create_person(self, person: Person):
-        self.person = person
+    def did_create_person(self, identifier: Any):
+        self.identifier = identifier
 
 
 class DeleteObserver(DeletePersonObserver):
@@ -25,5 +26,3 @@ class DeleteObserver(DeletePersonObserver):
 
     def did_delete_person(self, person: Person):
         self.deleted_person = person
-
-
