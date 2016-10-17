@@ -19,13 +19,7 @@ class Test_When_No_People_Exist(object):
 class Test_When_One_Person_Exists(object):
     def test_body_should_contain_one_person(self, create_person, get_people):
         response = create_person('Frank Stella')
-        people = get_json_from_response(get_people())['data']
-
-        assert len(people) == 1
-
-        person = people[0]
         person_id = get_identifier_for_created_person(response)
+        people = get_json_from_response(get_people())
 
-        assert len(person) == 2
-        assert person['name'] == 'Frank Stella'
-        assert person['id'] == person_id
+        assert people == {'data': [{'name': 'Frank Stella', 'id': person_id}], 'type': 'person_list'}
