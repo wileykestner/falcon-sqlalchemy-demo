@@ -50,9 +50,9 @@ class PersonResource(object):
             person = session.query(Person).get(int(identifier))
             if person is not None:
                 resp.data = json.dumps({
-                    "type": "person",
-                    "data": {"id": person.id, "name": person.name},
-                }).encode("utf-8")
+                    'type': 'person',
+                    'data': {'id': person.id, 'name': person.name},
+                }).encode('utf-8')
             else:
                 resp.status = falcon.HTTP_404
 
@@ -71,7 +71,7 @@ def get_app():
     person_resource = PersonResource(session_provider=_session_provider)
 
     _app = falcon.API()
-    _app.add_route("/people", person_list_resource)
-    _app.add_route("/people/{identifier}", person_resource)
+    _app.add_route('/people', person_list_resource)
+    _app.add_route('/people/{identifier}', person_resource)
 
     return _app
