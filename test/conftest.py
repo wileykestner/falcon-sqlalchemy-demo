@@ -32,5 +32,17 @@ def create_person(db, application):
 
 # noinspection PyShadowingNames,PyUnusedLocal
 @pytest.fixture
+def get_person(db, application):
+    def _get_person(identifier, status=None):
+        kwargs = {}
+        if status is not None:
+            kwargs['status'] = status
+        return application.get('/people/{}'.format(identifier), **kwargs)
+
+    return _get_person
+
+
+# noinspection PyShadowingNames,PyUnusedLocal
+@pytest.fixture
 def delete_person(db, application):
     return lambda identifier: application.delete('/people/{}'.format(identifier))

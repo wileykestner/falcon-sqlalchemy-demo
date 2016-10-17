@@ -1,10 +1,18 @@
 from typing import Any
 
-from people.observers import CreatePersonObserver, PresentPeopleObserver, DeletePersonObserver
+from people.observers import CreatePersonObserver, PresentPeopleObserver, DeletePersonObserver, PresentPersonObserver
 from people.values import Person
 
 
-class PresentObserver(PresentPeopleObserver):
+class PresentOnePersonObserver(PresentPersonObserver):
+    def __init__(self):
+        self.person = None
+
+    def did_present_person(self, person):
+        self.person = person
+
+
+class PresentManyPeopleObserver(PresentPeopleObserver):
     def __init__(self):
         self.people = None
 

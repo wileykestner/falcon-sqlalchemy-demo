@@ -1,6 +1,7 @@
 from people.people_application import PeopleApplication
-from test.test_people.test_observers import PresentObserver, CreateObserver, DeleteObserver
 from test.test_people.reference_repositories import InMemoryPeopleRepository
+from test.test_people.test_observers import PresentManyPeopleObserver, CreateObserver, DeleteObserver, \
+    PresentOnePersonObserver
 
 
 # noinspection PyPep8Naming,PyUnusedLocal,PyShadowingNames
@@ -9,10 +10,25 @@ class Test_People_Application(object):
         people_repository = InMemoryPeopleRepository()
         people_application = PeopleApplication(people_repository=people_repository)
 
-        present_observer = PresentObserver()
+        present_observer = PresentManyPeopleObserver()
         people_application.present_people(observer=present_observer)
 
         assert present_observer.people == []
+
+    def test_present_person(self):
+        people_repository = InMemoryPeopleRepository()
+        people_application = PeopleApplication(people_repository=people_repository)
+
+        create_observer = CreateObserver()
+        people_application.create_person(name='Aaron', observer=create_observer)
+
+        identifier = create_observer.identifier
+
+        present_observer = PresentOnePersonObserver()
+        people_application.present_person(identifier=identifier, observer=present_observer)
+
+        assert present_observer.person.identifier == identifier
+        assert present_observer.person.name == 'Aaron'
 
     def test_create_person(self):
         people_repository = InMemoryPeopleRepository()
@@ -21,7 +37,7 @@ class Test_People_Application(object):
         create_observer = CreateObserver()
         people_application.create_person(name='Mary', observer=create_observer)
 
-        present_observer = PresentObserver()
+        present_observer = PresentManyPeopleObserver()
         people_application.present_people(observer=present_observer)
 
         assert len(present_observer.people) == 1
@@ -40,7 +56,7 @@ class Test_People_Application(object):
 
         assert delete_observer.deleted_person.name == 'Mary'
 
-        present_observer = PresentObserver()
+        present_observer = PresentManyPeopleObserver()
         people_application.present_people(observer=present_observer)
 
         assert present_observer.people == []

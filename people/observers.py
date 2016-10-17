@@ -10,6 +10,12 @@ class CreatePersonObserver(metaclass=ABCMeta):
         pass
 
 
+class PresentPersonObserver(metaclass=ABCMeta):
+    @abstractmethod
+    def did_present_person(self, person: Person):
+        pass
+
+
 class PresentPeopleObserver(metaclass=ABCMeta):
     @abstractmethod
     def did_present_people(self, people: Sequence[Person]):
