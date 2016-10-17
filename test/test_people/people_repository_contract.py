@@ -3,9 +3,10 @@ import pytest
 from people.repositories import PeopleRepository
 
 
+# noinspection PyMethodMayBeStatic
 class PeopleRepositoryContract(object):
     @pytest.fixture
-    def a_people_repository(self):
+    def a_people_repository(self, *args):
         raise NotImplementedError('Not Implemented Yet')
 
     def test_starts_out_empty(self, a_people_repository):

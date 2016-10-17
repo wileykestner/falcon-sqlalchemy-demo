@@ -3,7 +3,7 @@ import json
 import falcon
 
 from .persistence import session_scope, SessionProvider
-from .person import Person
+from .postgres_people_repository import PostgresPerson
 
 
 class PersonListResource(object):
@@ -16,7 +16,7 @@ class PersonListResource(object):
         with session_scope(session):
             resp.data = json.dumps({
                 'type': 'person_list',
-                'data': [{'id': p.id, 'name': p.name} for p in session.query(Person, Person.id, Person.name).all()],
+                'data': [{'id': p.id, 'name': p.name} for p in session.query(PostgresPerson, PostgresPerson.id, PostgresPerson.name).all()],
             }).encode('utf-8')
 
     def on_post(self, req, resp):
@@ -25,7 +25,7 @@ class PersonListResource(object):
 
         session = self.session_provider.get_session()
         try:
-            person = Person(name=name)
+            person = PostgresPerson(name=name)
             session.add(person)
 
             session.commit()
@@ -47,7 +47,7 @@ class PersonResource(object):
     def on_get(self, req, resp, identifier):
         session = self.session_provider.get_session()
         with session_scope(session):
-            person = session.query(Person).get(int(identifier))
+            person = session.query(PostgresPerson).get(int(identifier))
             if person is not None:
                 resp.data = json.dumps({
                     'type': 'person',
@@ -59,7 +59,7 @@ class PersonResource(object):
     def on_delete(self, req, resp, identifier):
         session = self.session_provider.get_session()
         with session_scope(session):
-            person = session.query(Person).get(int(identifier))
+            person = session.query(PostgresPerson).get(int(identifier))
             session.delete(person)
 
             resp.status = falcon.HTTP_204
@@ -72,6 +72,6 @@ def get_app():
 
     _app = falcon.API()
     _app.add_route('/people', person_list_resource)
-    _app.add_route('/people/{identifier}', person_resource)
+    _app.add_route("/people/{identifier}", person_resource)
 
     return _app
