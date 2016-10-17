@@ -15,13 +15,13 @@ class PersonListResource(object):
         session = self.session_provider.get_session()
         with session_scope(session):
             resp.data = json.dumps({
-                "type": "person_list",
-                "data": [{"id": p.id, "name": p.name} for p in session.query(Person, Person.id, Person.name).all()],
-            }).encode("utf-8")
+                'type': 'person_list',
+                'data': [{'id': p.id, 'name': p.name} for p in session.query(Person, Person.id, Person.name).all()],
+            }).encode('utf-8')
 
     def on_post(self, req, resp):
-        post_body = json.loads(req.stream.read().decode("utf-8"))
-        name = post_body.get("name")
+        post_body = json.loads(req.stream.read().decode('utf-8'))
+        name = post_body.get('name')
 
         session = self.session_provider.get_session()
         try:

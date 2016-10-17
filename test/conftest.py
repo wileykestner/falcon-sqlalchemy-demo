@@ -1,7 +1,7 @@
 import pytest
 from webtest import TestApp
 
-from demo.application_provider import get_app
+from falcon_web_demo.application_provider import get_app
 from test.utils.helpers import set_up_test_database, tear_down_test_database
 
 

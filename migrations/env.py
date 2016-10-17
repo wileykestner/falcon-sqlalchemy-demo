@@ -6,7 +6,7 @@ from logging.config import fileConfig
 from sqlalchemy import create_engine
 
 from alembic import context
-from demo.persistence import get_url
+from falcon_web_demo.persistence import get_url
 
 config = context.config
 fileConfig(config.config_file_name)

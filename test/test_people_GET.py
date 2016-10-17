@@ -9,7 +9,9 @@ class Test_When_No_People_Exist(object):
         assert get_people().status_code == 200
 
     def test_header_content_type(self, get_people):
-        assert_header_value('content-type', 'application/json; charset=UTF-8', get_people().headers)
+        assert_header_value('content-type',
+                            'application/json; charset=UTF-8',
+                            get_people().headers)
 
     def test_body(self, get_people):
         assert_json_response({'data': [], 'type': 'person_list'}, get_people())
