@@ -3,8 +3,39 @@ from typing import Sequence
 
 import falcon
 
-from people.observers import PresentPeopleObserver, CreatePersonObserver, PresentPersonObserver, DeletePersonObserver
+from people.people_application import PeopleApplication, CreatePersonObserver, PresentPeopleObserver, \
+    PresentPersonObserver, DeletePersonObserver
 from people.values import Person
+
+
+class PersonListResource(object):
+    def __init__(self, people_application: PeopleApplication):
+        super().__init__()
+        self._people_application = people_application
+
+    def on_get(self, req, resp):
+        observer = WebPresentPeopleObserver(response=resp)
+        self._people_application.present_people(observer=observer)
+
+    def on_post(self, req, resp):
+        post_body = json.loads(req.stream.read().decode('utf-8'))
+        name = post_body.get('name')
+        observer = WebCreatePersonObserver(request=req, response=resp)
+        self._people_application.create_person(name=name, observer=observer)
+
+
+class PersonResource(object):
+    def __init__(self, people_application):
+        super().__init__()
+        self._people_application = people_application
+
+    def on_get(self, req, resp, identifier):
+        observer = WebPresentPersonObserver(response=resp)
+        self._people_application.present_person(identifier=int(identifier), observer=observer)
+
+    def on_delete(self, req, resp, identifier):
+        observer = WebDeletePersonObserver(response=resp)
+        self._people_application.delete_person(identifier=int(identifier), observer=observer)
 
 
 class WebCreatePersonObserver(CreatePersonObserver):

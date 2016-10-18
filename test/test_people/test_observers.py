@@ -1,6 +1,7 @@
 from typing import Any
 
-from people.observers import CreatePersonObserver, PresentPeopleObserver, DeletePersonObserver, PresentPersonObserver
+from people.people_application import CreatePersonObserver, PresentPersonObserver, PresentPeopleObserver, \
+    DeletePersonObserver
 from people.values import Person
 
 

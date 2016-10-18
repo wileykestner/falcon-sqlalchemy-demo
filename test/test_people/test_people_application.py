@@ -1,5 +1,4 @@
-from people.observers import DeletePersonObserver
-from people.people_application import PeopleApplication
+from people.people_application import PeopleApplication, DeletePersonObserver
 from test.test_people.reference_repositories import InMemoryPeopleRepository
 from test.test_people.test_observers import PresentManyPeopleObserver, CreateObserver, DeleteObserver, \
     PresentOnePersonObserver
