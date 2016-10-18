@@ -5,7 +5,7 @@ import falcon
 from falcon_web_demo.observers import WebPresentPeopleObserver, WebCreatePersonObserver, WebPresentPersonObserver, \
     WebDeletePersonObserver
 from people.people_application import PeopleApplication
-from .persistence import SessionProvider
+from .persistence import SessionScope
 from .postgres_people_repository import PostgresPeopleRepository
 
 
@@ -40,8 +40,8 @@ class PersonResource(object):
 
 
 def get_app():
-    session_provider = SessionProvider()
-    people_repository = PostgresPeopleRepository(session_provider=session_provider)
+    session_scope = SessionScope()
+    people_repository = PostgresPeopleRepository(session_scope=session_scope)
     people_application = PeopleApplication(people_repository=people_repository)
     person_list_resource = PersonListResource(people_application=people_application)
     person_resource = PersonResource(people_application=people_application)

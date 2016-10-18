@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 from typing import Sequence
 
 from sqlalchemy import Column, Integer, String
@@ -21,12 +20,12 @@ class PostgresPerson(Base):
 
 
 class PostgresPeopleRepository(PeopleRepository):
-    def __init__(self, session_provider):
+    def __init__(self, session_scope):
         super().__init__()
-        self._session_provider = session_provider
+        self.session_scope = session_scope
 
     def delete_person(self, identifier: int) -> Person:
-        with self._isolated_transaction() as session:
+        with self.session_scope() as session:
             postgres_person = session.query(PostgresPerson).get(int(identifier))
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
@@ -36,7 +35,7 @@ class PostgresPeopleRepository(PeopleRepository):
             return Person(identifier=identifier, name=name)
 
     def fetch_person(self, identifier: int) -> Person:
-        with self._isolated_transaction() as session:
+        with self.session_scope() as session:
             postgres_person = session.query(PostgresPerson).get(int(identifier))
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
@@ -45,27 +44,13 @@ class PostgresPeopleRepository(PeopleRepository):
             return Person(identifier=identifier, name=name)
 
     def create_person(self, name: str) -> int:
-        with self._isolated_transaction(commit_on_exit=False) as session:
+        with self.session_scope(commit_on_exit=False) as session:
             postgres_person = PostgresPerson(name=name)
             session.add(postgres_person)
             session.commit()
             return postgres_person.id
 
     def fetch_people(self) -> Sequence[Person]:
-        with self._isolated_transaction() as session:
+        with self.session_scope() as session:
             return [Person(identifier=p.id, name=p.name) for p in session.query(PostgresPerson, PostgresPerson.id,
                                                                                 PostgresPerson.name).all()]
-
-    @contextmanager
-    def _isolated_transaction(self, commit_on_exit=True):
-        session = self._session_provider.get_session()
-        try:
-            yield session
-        except:
-            session.rollback()  # untested
-            raise
-        else:
-            if commit_on_exit:
-                session.commit()
-        finally:
-            session.close()  # untested

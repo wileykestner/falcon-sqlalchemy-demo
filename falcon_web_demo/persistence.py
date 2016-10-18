@@ -1,8 +1,8 @@
 import os
+from contextlib import contextmanager
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from contextlib import contextmanager
 
 
 def get_url():
@@ -13,23 +13,22 @@ def get_url():
     return database_url
 
 
-class SessionProvider(object):
+class SessionScope(object):
     def __init__(self):
         super().__init__()
         self.engine = create_engine(get_url())
         self._session_provider = sessionmaker(self.engine)
 
-    def get_session(self):
-        return self._session_provider()
-
-
-@contextmanager
-def session_scope(session):
-    try:
-        yield
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-    finally:
-        session.close()
+    @contextmanager
+    def __call__(self, commit_on_exit=True, *args, **kwargs):
+        session = self._session_provider()
+        try:
+            yield session
+        except:
+            session.rollback()  # untested
+            raise
+        else:
+            if commit_on_exit:
+                session.commit()
+        finally:
+            session.close()  # untested
