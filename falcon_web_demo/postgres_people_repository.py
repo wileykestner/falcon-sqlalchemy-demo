@@ -1,4 +1,3 @@
-from typing import Any
 from typing import Sequence
 
 from sqlalchemy import Column, Integer, String
@@ -25,10 +24,14 @@ class PostgresPeopleRepository(PeopleRepository):
         super().__init__()
         self._session_provider = session_provider
 
-    def delete_person(self, identifier) -> Person:
+    def delete_person(self, identifier: int) -> Person:
         session = self._session_provider.get_session()
         postgres_person = session.query(PostgresPerson).get(int(identifier))
+        if postgres_person is None:
+            raise PeopleRepository.NotFound()
+
         session.delete(postgres_person)
+
         session.commit()
 
         identifier = postgres_person.id
@@ -38,17 +41,17 @@ class PostgresPeopleRepository(PeopleRepository):
 
         return Person(identifier=identifier, name=name)
 
-    def fetch_person(self, identifier) -> Person:
+    def fetch_person(self, identifier: int) -> Person:
         session = self._session_provider.get_session()
         postgres_person = session.query(PostgresPerson).get(int(identifier))
-        if postgres_person is not None:
-            identifier = postgres_person.id
-            name = postgres_person.name
-            session.close()  # untested
-            return Person(identifier=identifier, name=name)
-        raise PeopleRepository.NotFound()
+        if postgres_person is None:
+            raise PeopleRepository.NotFound()
+        identifier = postgres_person.id
+        name = postgres_person.name
+        session.close()  # untested
+        return Person(identifier=identifier, name=name)
 
-    def create_person(self, name: str) -> Any:
+    def create_person(self, name: str) -> int:
         session = self._session_provider.get_session()
         postgres_person = PostgresPerson(name=name)
         session.add(postgres_person)

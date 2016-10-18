@@ -36,3 +36,7 @@ class PeopleRepositoryContract(object):
         a_people_repository.delete_person(identifier=identifier)
         with pytest.raises(PeopleRepository.NotFound):
             a_people_repository.fetch_person(identifier=identifier)
+
+    def test_deleting_a_person_with_an_invalid_identifier(self, a_people_repository):
+        with pytest.raises(PeopleRepository.NotFound):
+            a_people_repository.delete_person(identifier=2134)

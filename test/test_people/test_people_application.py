@@ -1,3 +1,4 @@
+from people.observers import DeletePersonObserver
 from people.people_application import PeopleApplication
 from test.test_people.reference_repositories import InMemoryPeopleRepository
 from test.test_people.test_observers import PresentManyPeopleObserver, CreateObserver, DeleteObserver, \
@@ -51,7 +52,7 @@ class Test_People_Application(object):
         people_application.create_person(name='Mary', observer=create_observer)
 
         delete_observer = DeleteObserver()
-        people_application.delete_person(identfier=create_observer.identifier,
+        people_application.delete_person(identifier=create_observer.identifier,
                                          observer=delete_observer)
 
         assert delete_observer.deleted_person.name == 'Mary'
@@ -60,3 +61,13 @@ class Test_People_Application(object):
         people_application.present_people(observer=present_observer)
 
         assert present_observer.people == []
+
+    def test_delete_person_with_invalid_identifier(self):
+        people_repository = InMemoryPeopleRepository()
+        people_application = PeopleApplication(people_repository=people_repository)
+        delete_observer = DeleteObserver()
+        people_application.delete_person(identifier=1234,
+                                         observer=delete_observer)
+
+        assert type(delete_observer.error) == DeletePersonObserver.InvalidIdentifier
+        assert delete_observer.identifier == 1234

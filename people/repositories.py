@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Sequence, Any
+from typing import Sequence
 
 from people.values import Person
 
@@ -9,11 +9,11 @@ class PeopleRepository(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def create_person(self, name: str) -> Any:
+    def create_person(self, name: str) -> int:
         pass
 
     @abstractmethod
-    def fetch_person(self, identifier) -> Person:
+    def fetch_person(self, identifier: int) -> Person:
         pass
 
     @abstractmethod
@@ -21,5 +21,5 @@ class PeopleRepository(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def delete_person(self, identifier) -> Person:
+    def delete_person(self, identifier: int) -> Person:
         pass

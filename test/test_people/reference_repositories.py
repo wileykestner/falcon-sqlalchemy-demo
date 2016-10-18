@@ -10,7 +10,7 @@ class InMemoryPeopleRepository(PeopleRepository):
         self._people = set()
         self._next_identifier = 1
 
-    def create_person(self, name: str) -> Person:
+    def create_person(self, name: str) -> int:
         next_identifier = self._next_identifier
         person = Person(identifier=next_identifier, name=name)
         self._next_identifier += 1
@@ -18,7 +18,7 @@ class InMemoryPeopleRepository(PeopleRepository):
 
         return next_identifier
 
-    def fetch_person(self, identifier) -> Person:
+    def fetch_person(self, identifier: int) -> Person:
         try:
             return next((p for p in self._people if p.identifier == identifier))
         except StopIteration:
@@ -27,8 +27,10 @@ class InMemoryPeopleRepository(PeopleRepository):
     def fetch_people(self) -> Sequence[Person]:
         return [p for p in self._people]
 
-    def delete_person(self, identifier) -> Person:
-        person = next((p for p in self._people if p.identifier == identifier))
-        self._people.clear()
-
-        return person
+    def delete_person(self, identifier: int) -> Person:
+        try:
+            person = next((p for p in self._people if p.identifier == identifier))
+            self._people.clear()
+            return person
+        except StopIteration:
+            raise PeopleRepository.NotFound()
