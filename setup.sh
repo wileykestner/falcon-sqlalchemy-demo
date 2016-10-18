@@ -8,6 +8,8 @@ function eval_in_virtual_environment {
     fi
 
     source ${VIRTUALENV_NAME}/bin/activate
+    pip install --upgrade pip
+    pip install --upgrade wheel
     pip install -r requirements.txt
     pip install -r requirements-dev.txt
     deactivate
