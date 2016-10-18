@@ -45,4 +45,10 @@ def get_person(db, application):
 # noinspection PyShadowingNames,PyUnusedLocal
 @pytest.fixture
 def delete_person(db, application):
-    return lambda identifier: application.delete('/people/{}'.format(identifier))
+    def _delete(identifier, status=None):
+        kwargs = {}
+        if status is not None:
+            kwargs['status'] = status
+        return application.delete('/people/{}'.format(identifier), **kwargs)
+
+    return _delete

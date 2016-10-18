@@ -4,7 +4,7 @@ from test.utils.helpers import get_header_value
 
 
 # noinspection PyPep8Naming
-class Test_Creating_People(object):
+class Test_When_No_People_Exist(object):
     def test_status_code(self, create_person):
         response = create_person("Batman")
 

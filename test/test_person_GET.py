@@ -2,7 +2,7 @@ from test.utils.helpers import get_json_from_response, get_identifier_for_create
 
 
 # noinspection PyPep8Naming,PyShadowingNames
-class Test_When_No_Person_Exists(object):
+class Test_When_No_People_Exist(object):
     def test_status_code(self, get_person):
         assert get_person(identifier=1234, status=404).status_code == 404
 
