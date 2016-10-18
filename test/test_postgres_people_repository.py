@@ -2,7 +2,7 @@ import pytest
 
 from falcon_web_demo.persistence import SessionScope
 from falcon_web_demo.postgres_people_repository import PostgresPeopleRepository
-from test.test_people.people_repository_contract import PeopleRepositoryContract
+from test_people.people_repository_contract import PeopleRepositoryContract
 
 
 class TestPostgresPeopleRepository(PeopleRepositoryContract):
