@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from typing import Sequence
 
 from sqlalchemy import Column, Integer, String
@@ -25,31 +26,23 @@ class PostgresPeopleRepository(PeopleRepository):
         self._session_provider = session_provider
 
     def delete_person(self, identifier: int) -> Person:
-        session = self._session_provider.get_session()
-        postgres_person = session.query(PostgresPerson).get(int(identifier))
-        if postgres_person is None:
-            raise PeopleRepository.NotFound()
-
-        session.delete(postgres_person)
-
-        session.commit()
-
-        identifier = postgres_person.id
-        name = postgres_person.name
-
-        session.close()  # untested
-
-        return Person(identifier=identifier, name=name)
+        with self._isolated_transaction() as session:
+            postgres_person = session.query(PostgresPerson).get(int(identifier))
+            if postgres_person is None:
+                raise PeopleRepository.NotFound()
+            session.delete(postgres_person)
+            identifier = postgres_person.id
+            name = postgres_person.name
+            return Person(identifier=identifier, name=name)
 
     def fetch_person(self, identifier: int) -> Person:
-        session = self._session_provider.get_session()
-        postgres_person = session.query(PostgresPerson).get(int(identifier))
-        if postgres_person is None:
-            raise PeopleRepository.NotFound()
-        identifier = postgres_person.id
-        name = postgres_person.name
-        session.close()  # untested
-        return Person(identifier=identifier, name=name)
+        with self._isolated_transaction() as session:
+            postgres_person = session.query(PostgresPerson).get(int(identifier))
+            if postgres_person is None:
+                raise PeopleRepository.NotFound()
+            identifier = postgres_person.id
+            name = postgres_person.name
+            return Person(identifier=identifier, name=name)
 
     def create_person(self, name: str) -> int:
         session = self._session_provider.get_session()
@@ -67,3 +60,15 @@ class PostgresPeopleRepository(PeopleRepository):
         session.close()  # untested
 
         return person_list
+
+    @contextmanager
+    def _isolated_transaction(self):
+        session = self._session_provider.get_session()
+        try:
+            yield session
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
