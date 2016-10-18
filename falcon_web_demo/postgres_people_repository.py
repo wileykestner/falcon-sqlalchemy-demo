@@ -62,10 +62,10 @@ class PostgresPeopleRepository(PeopleRepository):
         try:
             yield session
         except:
-            session.rollback()
+            session.rollback()  # untested
             raise
         else:
             if commit_on_exit:
                 session.commit()
         finally:
-            session.close()
+            session.close()  # untested
