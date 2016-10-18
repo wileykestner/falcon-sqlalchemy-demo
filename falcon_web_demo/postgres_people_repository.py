@@ -52,7 +52,7 @@ class PostgresPeopleRepository(PeopleRepository):
             return postgres_person.id
 
     def fetch_people(self) -> Sequence[Person]:
-        with self._isolated_transaction(commit_on_exit=False) as session:
+        with self._isolated_transaction() as session:
             return [Person(identifier=p.id, name=p.name) for p in session.query(PostgresPerson, PostgresPerson.id,
                                                                                 PostgresPerson.name).all()]
 
