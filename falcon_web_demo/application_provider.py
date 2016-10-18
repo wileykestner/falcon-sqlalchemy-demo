@@ -48,6 +48,6 @@ def get_app():
 
     _app = falcon.API()
     _app.add_route('/people', person_list_resource)
-    _app.add_route("/people/{identifier}", person_resource)
+    _app.add_route('/people/{identifier}', person_resource)
 
     return _app
