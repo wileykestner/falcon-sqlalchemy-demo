@@ -11,6 +11,7 @@ function test_with_flake8_and_coverage {
     TEST_STATUS=$?
 
     if [[ ( ${FLAKE_STATUS} == 0 ) && ( ${TEST_STATUS} == 0 ) ]] ; then
+        echo "All tests pass, application is PEP8 compliant, and 100% of the production code is covered by test."
         exit 0
     else
         exit 1
