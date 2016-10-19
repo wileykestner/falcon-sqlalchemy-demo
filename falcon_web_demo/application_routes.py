@@ -10,7 +10,8 @@ def get_app():
     session_scope = SessionScope()
     people_repository = PostgresPeopleRepository(session_scope=session_scope)
     people_application = PeopleApplication(people_repository=people_repository)
-    person_list_resource = PersonListResource(people_application=people_application)
+    person_list_resource = PersonListResource(
+        people_application=people_application)
     person_resource = PersonResource(people_application=people_application)
 
     _app = falcon.API()

@@ -1,14 +1,6 @@
-"""create people table
-
-Revision ID: c92129dda39a
-Revises: 
-Create Date: 2016-09-27 17:29:36.819424
-
-"""
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
-# revision identifiers, used by Alembic.
 revision = 'c92129dda39a'
 down_revision = None
 branch_labels = None
@@ -24,4 +16,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('people')
+    op.drop_table('people')  # pragma: no cover

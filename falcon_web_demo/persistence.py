@@ -6,11 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 def get_url():
-    database_url = os.getenv("DATABASE_URL", "sqlite:///development.db")
-    if database_url is None:
-        raise ValueError("Could not find DATABASE_URL in the local environment.")
-
-    return database_url
+    return os.getenv("DATABASE_URL", "sqlite:///development.db")
 
 
 class SessionScope(object):

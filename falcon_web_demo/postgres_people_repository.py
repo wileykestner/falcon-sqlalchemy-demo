@@ -1,10 +1,9 @@
 from typing import Sequence
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-
 from people.repositories import PeopleRepository
 from people.values import Person
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
@@ -15,9 +14,6 @@ class PostgresPerson(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
-    def __repr__(self):
-        return "<PostgresPerson(name='{}')>".format(self.name)
-
 
 class PostgresPeopleRepository(PeopleRepository):
     def __init__(self, session_scope):
@@ -26,7 +22,8 @@ class PostgresPeopleRepository(PeopleRepository):
 
     def delete_person(self, identifier: int) -> Person:
         with self.session_scope() as session:
-            postgres_person = session.query(PostgresPerson).get(int(identifier))
+            identifier = int(identifier)
+            postgres_person = session.query(PostgresPerson).get(identifier)
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
             session.delete(postgres_person)
@@ -36,7 +33,8 @@ class PostgresPeopleRepository(PeopleRepository):
 
     def fetch_person(self, identifier: int) -> Person:
         with self.session_scope() as session:
-            postgres_person = session.query(PostgresPerson).get(int(identifier))
+            identifier = int(identifier)
+            postgres_person = session.query(PostgresPerson).get(identifier)
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
             identifier = postgres_person.id
@@ -52,5 +50,7 @@ class PostgresPeopleRepository(PeopleRepository):
 
     def fetch_people(self) -> Sequence[Person]:
         with self.session_scope() as session:
-            return [Person(identifier=p.id, name=p.name) for p in session.query(PostgresPerson, PostgresPerson.id,
-                                                                                PostgresPerson.name).all()]
+            return [Person(identifier=p.id, name=p.name)
+                    for p in session.query(PostgresPerson,
+                                           PostgresPerson.id,
+                                           PostgresPerson.name).all()]

@@ -2,9 +2,10 @@ import json
 from typing import Sequence
 
 import falcon
-
-from people.people_application import PeopleApplication, CreatePersonObserver, PresentPeopleObserver, \
-    PresentPersonObserver, DeletePersonObserver
+from people.people_application import DeletePersonObserver
+from people.people_application import PeopleApplication, CreatePersonObserver
+from people.people_application import PresentPeopleObserver
+from people.people_application import PresentPersonObserver
 from people.values import Person
 
 
@@ -31,11 +32,13 @@ class PersonResource(object):
 
     def on_get(self, req, resp, identifier):
         observer = WebPresentPersonObserver(response=resp)
-        self._people_application.present_person(identifier=int(identifier), observer=observer)
+        self._people_application.present_person(identifier=int(identifier),
+                                                observer=observer)
 
     def on_delete(self, req, resp, identifier):
         observer = WebDeletePersonObserver(response=resp)
-        self._people_application.delete_person(identifier=int(identifier), observer=observer)
+        self._people_application.delete_person(identifier=int(identifier),
+                                               observer=observer)
 
 
 class WebCreatePersonObserver(CreatePersonObserver):
@@ -45,7 +48,8 @@ class WebCreatePersonObserver(CreatePersonObserver):
         self.response = response
 
     def did_create_person(self, identifier: int):
-        self.response.set_header('location', "{}/{}".format(self.request.uri, identifier))
+        self.response.set_header('location', "{}/{}".format(self.request.uri,
+                                                            identifier))
         self.response.status = falcon.HTTP_201
 
 

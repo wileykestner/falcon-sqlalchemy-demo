@@ -16,5 +16,5 @@ function eval_in_virtual_environment {
     source ${VIRTUALENV_NAME}/bin/activate
     PYTHONPATH=$PYTHONPATH:. alembic upgrade head
     echo "Running '$1' inside virtual environment…"
-    eval $1
+    $1
 }
