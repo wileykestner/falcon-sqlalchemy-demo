@@ -12,8 +12,8 @@ def get_url():
 class SessionScope(object):
     def __init__(self):
         super().__init__()
-        self.engine = create_engine(get_url())
-        self._session_provider = sessionmaker(self.engine)
+        self._engine = create_engine(get_url())
+        self._session_provider = sessionmaker(self._engine)
 
     @contextmanager
     def __call__(self, commit_on_exit=True, *args, **kwargs):
