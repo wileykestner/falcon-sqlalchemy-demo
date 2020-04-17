@@ -2,7 +2,7 @@
 --find-links vendor-dev/
 
 beautifulsoup4==4.5.1
-coverage==4.4.1
+coverage==5.1
 flake8==3.0.4
 mccabe==0.5.2
 py==1.4.31
