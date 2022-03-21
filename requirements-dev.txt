@@ -10,6 +10,6 @@ pycodestyle==2.0.0
 pyflakes==1.2.3
 pytest==3.0.3
 pytest-cov==2.4.0
-waitress==1.4.3
+waitress==2.1.1
 WebOb==1.6.1
 WebTest==2.0.23
