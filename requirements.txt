@@ -4,7 +4,7 @@
 alembic==0.8.8
 falcon==1.0.0
 gunicorn==19.6.0
-Mako==1.0.4
+Mako==1.2.2
 MarkupSafe==0.23
 people==0.0.1
 python-editor==1.0.1
