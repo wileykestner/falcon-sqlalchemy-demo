@@ -15,7 +15,7 @@ def get_app() -> API:
         people_application=people_application)
     person_resource = PersonResource(people_application=people_application)
 
-    _app = falcon.API()
+    _app = falcon.App()
     _app.add_route('/people', person_list_resource)
     _app.add_route('/people/{identifier}', person_resource)
 

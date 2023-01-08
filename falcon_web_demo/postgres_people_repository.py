@@ -3,7 +3,7 @@ from typing import Sequence
 from people.repositories import PeopleRepository
 from people.values import Person
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -23,7 +23,7 @@ class PostgresPeopleRepository(PeopleRepository):
     def delete_person(self, identifier: int) -> Person:
         with self.session_scope() as session:
             identifier = int(identifier)
-            postgres_person = session.query(PostgresPerson).get(identifier)
+            postgres_person = session.get(PostgresPerson, identifier)
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
             session.delete(postgres_person)
@@ -34,7 +34,7 @@ class PostgresPeopleRepository(PeopleRepository):
     def fetch_person(self, identifier: int) -> Person:
         with self.session_scope() as session:
             identifier = int(identifier)
-            postgres_person = session.query(PostgresPerson).get(identifier)
+            postgres_person = session.get(PostgresPerson, identifier)
             if postgres_person is None:
                 raise PeopleRepository.NotFound()
             identifier = postgres_person.id

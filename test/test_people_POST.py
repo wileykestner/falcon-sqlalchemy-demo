@@ -12,7 +12,7 @@ class Test_When_No_People_Exist(object):
 
     def test_json_response_in_utf_8(self, create_person):
         response = create_person("Robin")
-        assert_header_value('content-type', 'application/json; charset=UTF-8', response.headers)
+        assert_header_value('content-type', 'application/json', response.headers)
 
     def test_should_put_the_url_of_the_newly_created_resource_in_the_location_header(self,
                                                                                      create_person,

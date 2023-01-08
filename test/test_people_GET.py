@@ -10,7 +10,7 @@ class Test_When_No_People_Exist(object):
 
     def test_header_content_type(self, get_people):
         assert_header_value('content-type',
-                            'application/json; charset=UTF-8',
+                            'application/json',
                             get_people().headers)
 
     def test_body(self, get_people):

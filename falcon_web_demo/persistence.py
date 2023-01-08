@@ -20,9 +20,9 @@ class SessionScope(object):
         session = self._session_provider()
         try:
             yield session
-        except:
+        except Exception as e:
             session.rollback()  # untested
-            raise
+            raise e
         else:
             if commit_on_exit:
                 session.commit()
