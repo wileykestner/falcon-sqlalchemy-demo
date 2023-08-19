@@ -19,8 +19,8 @@ class PersonListResource(object):
         self._people_application.present_people(observer=observer)
 
     def on_post(self, req, resp):
-        post_body = json.loads(req.stream.read().decode('utf-8'))
-        name = post_body.get('name')
+        post_body = json.loads(req.stream.read().decode("utf-8"))
+        name = post_body.get("name")
         observer = WebCreatePersonObserver(request=req, response=resp)
         self._people_application.create_person(name=name, observer=observer)
 
@@ -32,13 +32,15 @@ class PersonResource(object):
 
     def on_get(self, req, resp, identifier):
         observer = WebPresentPersonObserver(response=resp)
-        self._people_application.present_person(identifier=int(identifier),
-                                                observer=observer)
+        self._people_application.present_person(
+            identifier=int(identifier), observer=observer
+        )
 
     def on_delete(self, req, resp, identifier):
         observer = WebDeletePersonObserver(response=resp)
-        self._people_application.delete_person(identifier=int(identifier),
-                                               observer=observer)
+        self._people_application.delete_person(
+            identifier=int(identifier), observer=observer
+        )
 
 
 class WebCreatePersonObserver(CreatePersonObserver):
@@ -48,8 +50,9 @@ class WebCreatePersonObserver(CreatePersonObserver):
         self.response = response
 
     def did_create_person(self, identifier: int):
-        self.response.set_header('location', "{}/{}".format(self.request.uri,
-                                                            identifier))
+        self.response.set_header(
+            "location", "{}/{}".format(self.request.uri, identifier)
+        )
         self.response.status = falcon.HTTP_201
 
 
@@ -59,10 +62,12 @@ class WebPresentPeopleObserver(PresentPeopleObserver):
         self.response = response
 
     def did_present_people(self, people: Sequence[Person]):
-        self.response.data = json.dumps({
-            'type': 'person_list',
-            'data': [{'id': p.identifier, 'name': p.name} for p in people],
-        }).encode('utf-8')
+        self.response.data = json.dumps(
+            {
+                "type": "person_list",
+                "data": [{"id": p.identifier, "name": p.name} for p in people],
+            }
+        ).encode("utf-8")
 
 
 class WebPresentPersonObserver(PresentPersonObserver):
@@ -71,10 +76,12 @@ class WebPresentPersonObserver(PresentPersonObserver):
         self.response = response
 
     def did_present_person(self, person: Person):
-        self.response.data = json.dumps({
-            'type': 'person',
-            'data': {'id': person.identifier, 'name': person.name},
-        }).encode('utf-8')
+        self.response.data = json.dumps(
+            {
+                "type": "person",
+                "data": {"id": person.identifier, "name": person.name},
+            }
+        ).encode("utf-8")
 
     def did_fail_to_present_person(self, identifier: int, error: Exception):
         self.response.status = falcon.HTTP_404

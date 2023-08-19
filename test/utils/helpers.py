@@ -16,12 +16,8 @@ def set_up_test_database():
     os.environ["DATABASE_URL"] = TEST_DATABASE_URL
 
     import alembic.config
-    alembic_args = [
-        '-xloggingPreference=CRITICAL',
-        '--raiseerr',
-        'upgrade',
-        'head'
-    ]
+
+    alembic_args = ["-xloggingPreference=CRITICAL", "--raiseerr", "upgrade", "head"]
 
     alembic.config.main(argv=alembic_args)
 
@@ -35,7 +31,7 @@ def tear_down_test_database():
 
 
 def get_json_from_response(response):
-    response_string = response.body.decode('utf-8')
+    response_string = response.body.decode("utf-8")
 
     return json.loads(response_string)
 
@@ -48,4 +44,4 @@ def get_header_value(header_key, response_headers):
 
 
 def get_identifier_for_created_person(response):
-    return int(get_header_value('location', response.headers).split('/')[-1])
+    return int(get_header_value("location", response.headers).split("/")[-1])

@@ -9,7 +9,7 @@ Base = declarative_base()
 
 
 class PostgresPerson(Base):
-    __tablename__ = 'people'
+    __tablename__ = "people"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -50,7 +50,9 @@ class PostgresPeopleRepository(PeopleRepository):
 
     def fetch_people(self) -> Sequence[Person]:
         with self.session_scope() as session:
-            return [Person(identifier=p.id, name=p.name)
-                    for p in session.query(PostgresPerson,
-                                           PostgresPerson.id,
-                                           PostgresPerson.name).all()]
+            return [
+                Person(identifier=p.id, name=p.name)
+                for p in session.query(
+                    PostgresPerson, PostgresPerson.id, PostgresPerson.name
+                ).all()
+            ]

@@ -21,23 +21,21 @@ def application():
 # noinspection PyShadowingNames,PyUnusedLocal
 @pytest.fixture
 def get_people(db, application):
-    return lambda: application.get('/people')
+    return lambda: application.get("/people")
 
 
 # noinspection PyShadowingNames,PyUnusedLocal
 @pytest.fixture
 def create_person(db, application):
-    return lambda name: application.post_json('/people', {'name': name})
+    return lambda name: application.post_json("/people", {"name": name})
 
 
 # noinspection PyShadowingNames,PyUnusedLocal
 @pytest.fixture
 def get_person(db, application):
     def _get_person(identifier, status=None):
-        kwargs = {}
-        if status is not None:
-            kwargs['status'] = status
-        return application.get('/people/{}'.format(identifier), **kwargs)
+        kwargs = {} if status is None else {"status": status}
+        return application.get("/people/{}".format(identifier), **kwargs)
 
     return _get_person
 
@@ -46,9 +44,7 @@ def get_person(db, application):
 @pytest.fixture
 def delete_person(db, application):
     def _delete(identifier, status=None):
-        kwargs = {}
-        if status is not None:
-            kwargs['status'] = status
-        return application.delete('/people/{}'.format(identifier), **kwargs)
+        kwargs = {} if status is None else {"status": status}
+        return application.delete("/people/{}".format(identifier), **kwargs)
 
     return _delete

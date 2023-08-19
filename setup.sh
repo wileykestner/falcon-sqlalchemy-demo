@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 function eval_in_virtual_environment {
-    VIRTUALENV_NAME=env
+    VIRTUALENV_NAME="env"
 
     if [ ! -d ${VIRTUALENV_NAME} ]; then
-      python -m venv env
+      python -m venv "${VIRTUALENV_NAME}"
     fi
 
     source ${VIRTUALENV_NAME}/bin/activate
