@@ -24,7 +24,7 @@ test_with_flake8_coverage_and_black() {
     local flake8_status=$?
 
     coverage erase
-    py.test --quiet --cov=term:skip-covered --cov="${application_source_directory}" "${test_source_directory}"
+    py.test --quiet --cov="${application_source_directory}" "${test_source_directory}"
     local pytest_status=$?
 
     coverage erase
