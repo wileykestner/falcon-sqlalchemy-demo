@@ -1,6 +1,6 @@
 alembic==1.9.1
 falcon==3.1.1
-gunicorn==20.1.0
+gunicorn==22.0.0
 Mako==1.2.4
 MarkupSafe==2.1.1
 people==0.0.1
