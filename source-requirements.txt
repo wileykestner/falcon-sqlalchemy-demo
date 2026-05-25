@@ -1,4 +1,3 @@
---no-index
 --find-links vendor/
 
 people==0.0.1

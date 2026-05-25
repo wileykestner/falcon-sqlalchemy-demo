@@ -1,7 +1,7 @@
-from falcon import App
+import falcon
 
 from falcon_web_demo.wsgi import app
 
 
 def test_wsgi():
-    assert isinstance(app, App)
+    assert isinstance(app, falcon.App)

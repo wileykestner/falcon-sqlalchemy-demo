@@ -1,5 +1,4 @@
 import falcon
-from falcon import App
 from people.people_application import PeopleApplication
 
 from falcon_web_demo.person_resources import PersonListResource, PersonResource
@@ -7,7 +6,7 @@ from .persistence import SessionScope
 from .postgres_people_repository import PostgresPeopleRepository
 
 
-def get_app() -> App:
+def get_app():
     session_scope = SessionScope()
     people_repository = PostgresPeopleRepository(session_scope=session_scope)
     people_application = PeopleApplication(people_repository=people_repository)

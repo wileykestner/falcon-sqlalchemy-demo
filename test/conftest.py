@@ -13,7 +13,7 @@ def db():
 
 
 @pytest.fixture
-def application():
+def application(db):
     app = get_app()
     return TestApp(app)
 

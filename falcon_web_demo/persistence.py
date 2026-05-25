@@ -10,21 +10,20 @@ def get_url():
 
 
 class SessionScope(object):
-    def __init__(self):
-        super().__init__()
-        self._engine = create_engine(get_url())
-        self._session_provider = sessionmaker(self._engine)
 
     @contextmanager
     def __call__(self, commit_on_exit=True, *args, **kwargs):
-        session = self._session_provider()
+        engine = create_engine(get_url())
+        session_provider = sessionmaker(engine)
+        session = session_provider()
         try:
             yield session
         except Exception as e:
-            session.rollback()  # untested
+            session.rollback()
             raise e
         else:
             if commit_on_exit:
                 session.commit()
         finally:
-            session.close()  # untested
+            session.close()
+            engine.dispose()
